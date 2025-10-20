@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>График смен</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #232336;
+            --text: #ffffff;
+            --muted: #c9c9d4;
+            --btn: #463fb8;
+            --btn-hover: #5a53d6;
+            --btn-focus: 0 0 0 4px rgba(90, 83, 214, .35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bokeh {
+            position: fixed;
+            inset: -20vmax;
+            filter: blur(40px);
+            z-index: -1;
+        }
+
+        .bokeh::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(180px 180px at 85% 20%, rgba(31, 138, 255, .9), transparent 70%),
+                radial-gradient(210px 210px at 20% 30%, rgba(58, 199, 126, .9), transparent 70%),
+                radial-gradient(170px 170px at 12% 78%, rgba(237, 220, 84, .9), transparent 70%),
+                radial-gradient(160px 160px at 70% 65%, rgba(76, 126, 255, .9), transparent 70%),
+                radial-gradient(220px 220px at 60% 10%, rgba(237, 220, 84, .85), transparent 70%),
+                radial-gradient(150px 150px at 40% 55%, rgba(95, 183, 213, .85), transparent 70%),
+                radial-gradient(170px 170px at 92% 85%, rgba(95, 183, 213, .85), transparent 70%);
+            opacity: .9;
+            box-shadow: inset 0 0 250px 120px rgba(0, 0, 0, .35);
+        }
+
+        main.hero {
+            width: min(92vw, 1100px);
+            aspect-ratio: 16 / 9;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(16px, 3vw, 32px);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0 0 28px;
+            font-weight: 700;
+            letter-spacing: .02em;
+            font-size: clamp(28px, 6vw, 60px);
+        }
+
+        .cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            appearance: none;
+            border: 0;
+            border-radius: 12px;
+            padding: 14px 32px;
+            background: var(--btn);
+            color: #fff;
+            font-weight: 600;
+            font-size: clamp(14px, 2.2vw, 18px);
+            cursor: pointer;
+            transition: transform .08s ease, background .2s ease, box-shadow .2s ease;
+        }
+
+        .btn:hover {
+            background: var(--btn-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: var(--btn-focus);
+        }
+
+        .muted {
+            font-size: clamp(11px, 1.6vw, 13px);
+            color: var(--muted);
+        }
+
+        .muted a {
+            color: var(--muted);
+        }
+
+        .muted a:hover {
+            text-decoration: underline;
+        }
+
+
+        @media (min-width: 768px) {
+            .bokeh {
+                filter: blur(50px);
+            }
+
+            h1 {
+                margin-top: 100px;
+                margin-bottom: 300px !important;
+            }
+
+            .btn {
+                padding: 16px 40px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .bokeh {
+                filter: blur(60px);
+            }
+
+            main.hero {
+                width: min(90vw, 1200px);
+            }
+
+            h1 {
+                font-size: clamp(42px, 5vw, 64px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bokeh" aria-hidden="true"></div>
+
+    <main class="hero" role="main">
+        <h1>График смен</h1>
+        <div class="cta">
+            <button class="btn" type="button" ><a href="./login.html">Войти</a></button>
+            <div class="muted">Нет аккаунта? <a href="./register.html">Создайте его</a></div>
+        </div>
+    </main>
+</body>
+
+</html>

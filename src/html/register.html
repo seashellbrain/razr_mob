@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Регистрация — MyApp</title>
+
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="page">
+  <div class="auth">
+    <div class="auth__bg" aria-hidden="true">
+      <span class="auth__blob auth__blob--1"></span>
+      <span class="auth__blob auth__blob--2"></span>
+      <span class="auth__blob auth__blob--3"></span>
+      <span class="auth__blob auth__blob--4"></span>
+      <span class="auth__blob auth__blob--5"></span>
+    </div>
+
+    <main class="auth__content" role="main">
+      <h1 class="auth__title">Регистрация</h1>
+      <form class="form auth__form" action="#" method="post">
+        <label class="form__field">
+          <span class="form__label">E-mail</span>
+          <input class="form__input" type="email" name="email" placeholder="E-mail" required />
+        </label>
+        <label class="form__field">
+          <span class="form__label">Пароль</span>
+          <input class="form__input" type="password" name="password" placeholder="Пароль" required minlength="6" />
+        </label>
+        <button class="button form__submit" type="submit">Регистрация</button>
+      </form>
+      <p class="auth__hint">Есть аккаунт?
+        <a class="auth__link" href="login.html">Войти</a>
+      </p>
+    </main>
+  </div>
+</body>
+</html>

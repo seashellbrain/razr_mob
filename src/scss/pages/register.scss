@@ -1,0 +1,48 @@
+@use "../mixins" as m;
+
+// Токены
+:root {
+  --bg: #0f172a;
+  --panel: #1f2544cc;
+  --text: #e5e7eb;
+  --accent: #4f46e5;
+}
+
+/* Блок авторизации */
+.auth {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px;
+
+  @include m.medium { padding: 20px; }
+  @include m.small  { padding: 12px; }
+}
+
+.auth__content {
+  width: min(560px, 100%);
+  background: var(--panel);
+  border-radius: 18px;
+  padding: 48px;
+  text-align: center;
+
+  @include m.medium { padding: 32px; }
+  @include m.small  { padding: 20px; }
+}
+
+/* Кнопка */
+.button {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: filter .2s ease;
+
+  &:hover { filter: brightness(1.1); }
+  @include m.small { width: 100%; }
+}

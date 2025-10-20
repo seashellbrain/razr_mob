@@ -1,0 +1,228 @@
+@use "mixins" as m;
+
+/* локальные переменные только для главной */
+.home {
+  --bg: #0f122a;
+  --panel: #0b1022;
+  --panel-2: #101633;
+  --text: #e5e7eb;
+  --muted: #9aa3b2;
+  --primary: #4f46e5;
+  --day: #22c55e;
+  --night: #3b82f6;
+  --off: #ef4444;
+}
+
+body.home {
+  background: radial-gradient(
+      circle at 80% 10%,
+      rgba(53, 82, 255, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(circle at 20% 90%, rgba(0, 255, 208, 0.2), transparent 60%),
+    linear-gradient(180deg, #0b1120 0%, #111936 100%);
+  color: var(--text);
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 24px;
+  @include m.medium {
+    max-width: 820px;
+  }
+  @include m.small {
+    padding: 16px;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+.logo {
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+}
+.nav a {
+  color: #cbd5e1;
+  margin-left: 14px;
+}
+
+/* toolbar */
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0 18px;
+}
+.toolbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #ffffff22;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+.btn--ghost {
+  background: transparent;
+  color: #cbd5e1;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.badge {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+.badge--day {
+  background: var(--day);
+}
+.badge--night {
+  background: var(--night);
+}
+.badge--off {
+  background: var(--off);
+}
+
+/* календарь */
+.calendar {
+  background: #ffffff10;
+  backdrop-filter: blur(6px);
+  border: 1px solid #ffffff22;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px #0006;
+}
+.calendar__title {
+  color: #fff;
+  font-size: clamp(24px, 5vw, 36px);
+  margin: 0 8px;
+  font-weight: 800;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 1px solid #1f2a4b;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cell {
+  position: relative;
+  min-height: 92px;
+  padding: 10px 10px 10px 12px;
+  border-right: 1px solid #1f2a4b;
+  border-bottom: 1px solid #1f2a4b;
+  color: #cbd5e1;
+  background: linear-gradient(180deg, #0f172a, #0f172a);
+  user-select: none;
+  outline: none;
+}
+.cell:nth-child(7n) {
+  border-right: 0;
+}
+.cell--head {
+  min-height: 44px;
+  background: #0d1330;
+  color: #93a0c9;
+  font-weight: 700;
+}
+.cell--prev,
+.cell--next {
+  color: #64748b;
+  background: #0c1227;
+}
+.cell[role="gridcell"]:hover {
+  background: #141a38;
+  cursor: pointer;
+}
+.cell:focus-visible {
+  box-shadow: inset 0 0 0 2px #fff3;
+}
+
+/* отметки смен */
+.cell.shift-day {
+  background: linear-gradient(180deg, #0f172a, #0f172a) padding-box,
+    conic-gradient(var(--day) 0 100%, transparent 0) border-box;
+  border: 2px solid var(--day);
+}
+.cell.shift-night {
+  background: linear-gradient(180deg, #0f172a, #0f172a) padding-box,
+    conic-gradient(var(--night) 0 100%, transparent 0) border-box;
+  border: 2px solid var(--night);
+}
+.cell.shift-off {
+  background: linear-gradient(180deg, #0f172a, #0f172a) padding-box,
+    conic-gradient(var(--off) 0 100%, transparent 0) border-box;
+  border: 2px solid var(--off);
+}
+
+/* попап меню */
+.shift-menu {
+  position: fixed;
+  inset: 0 auto auto 0;
+  transform: translate(-50%, -50%);
+  background: #0d1330;
+  border: 1px solid #ffffff22;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 12px 32px #0007;
+  z-index: 50;
+}
+.shift-menu[hidden] {
+  display: none;
+}
+.shift-menu__item {
+  display: block;
+  width: 160px;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  color: #cbd5e1;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.shift-menu__item:hover {
+  background: #182048;
+}
+.shift-menu__item[data-shift="day"] {
+  color: var(--day);
+}
+.shift-menu__item[data-shift="night"] {
+  color: var(--night);
+}
+.shift-menu__item[data-shift="off"] {
+  color: var(--off);
+}
+
+@media (max-width: 767px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .cell {
+    min-height: 64px;
+  }
+}

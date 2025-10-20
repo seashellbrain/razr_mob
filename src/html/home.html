@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Календарь — Сентябрь 2025</title>
+  <link rel="stylesheet" href="../css/main.css" />
+
+  <!-- Локальные доп. стили страницы (не ломают main.css) -->
+  <style>
+    /* теги смены в ячейке */
+    .cell--content{display:flex;flex-direction:column;align-items:flex-start}
+    .cell--content .num{font:inherit}
+    .tag{display:inline-flex;align-items:center;gap:.5ch;font-size:.75rem;line-height:1;padding:.25rem .65rem;border-radius:999px;background:rgba(255,255,255,.08);margin-top:.35rem;cursor:pointer}
+    .dot{width:.6rem;height:.6rem;border-radius:50%;display:inline-block}
+    .dot--day{background:#ffd166}.dot--eve{background:#8ecae6}.dot--night{background:#90be6d}
+    .dot--h9{background:#bde0fe}.dot--full{background:#ffafcc}.dot--off{background:#f4a261}.dot--sick{background:#a5b4fc}
+
+    /* модалка */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:80}
+    .modal{width:min(560px,92vw);background:#1b1e22;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1rem;color:#eaecef;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+    .modal__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+    .modal__body{display:grid;gap:.75rem;max-height:min(70vh,600px);overflow:auto}
+    .modal__footer{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.5rem}
+
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem .9rem;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:transparent;color:inherit;cursor:pointer}
+    .btn--primary{background:#2a2f35;border-color:#2a2f35}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+
+    .shift-list{display:grid;gap:.5rem}
+    .shift-item{display:flex;align-items:center;gap:.8rem;padding:.7rem;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:#171a1e;cursor:pointer;text-align:left}
+    .shift-item__title{font-weight:600;color:#fff}
+    .shift-item__meta{opacity:.7;font-size:.85rem;color:#fff}
+
+    .editor{display:grid;gap:.6rem;padding:.5rem;border-top:1px dashed rgba(255,255,255,.08)}
+    .field{display:grid;gap:.25rem}
+    .field label{font-size:.85rem;opacity:.85}
+    .field input,.field select{padding:.55rem .6rem;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#121417;color:#eaecef}
+    .fields-2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+
+    .bottombar{position:sticky;bottom:0;z-index:30;background:#121417;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;padding:.5rem}
+    .bottombar .btn{justify-content:center;width:100%}
+
+    @media (max-width:640px){ .modal{width:95vw;padding:.8rem;border-radius:14px} }
+  </style>
+</head>
+
+<body class="home">
+  <!-- фон, как на странице входа -->
+  <div class="page-bg"></div>
+
+  <header class="header container">
+    <a href="index.html" class="logo">Polar</a>
+    <nav class="nav">
+      <a href="login.html">Вход</a>
+      <a href="register.html">Регистрация</a>
+      <a href="stats.html">Статистика</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="glass">
+      <div class="toolbar">
+        <div class="toolbar__left">
+          <button class="btn btn--ghost" data-nav="prev" aria-label="Предыдущий месяц">‹</button>
+          <h1 class="calendar__title page-title">Сентябрь 2025 г.</h1>
+          <button class="btn btn--ghost" data-nav="next" aria-label="Следующий месяц">›</button>
+        </div>
+        <button class="btn btn--primary" id="clearAll" type="button">Очистить всё</button>
+      </div>
+
+      <section class="calendar panel" data-year="2025" data-month="09">
+        <div class="grid" id="calendarGrid" role="grid" aria-label="Сентябрь 2025">
+          <!-- Заголовки -->
+          <div class="cell cell--head" role="columnheader">Пн</div>
+          <div class="cell cell--head" role="columnheader">Вт</div>
+          <div class="cell cell--head" role="columnheader">Ср</div>
+          <div class="cell cell--head" role="columnheader">Чт</div>
+          <div class="cell cell--head" role="columnheader">Пт</div>
+          <div class="cell cell--head" role="columnheader">Сб</div>
+          <div class="cell cell--head" role="columnheader">Вс</div>
+
+          <!-- Предыдущий месяц -->
+          <div class="cell cell--prev" aria-disabled="true">25</div>
+          <div class="cell cell--prev" aria-disabled="true">26</div>
+          <div class="cell cell--prev" aria-disabled="true">27</div>
+          <div class="cell cell--prev" aria-disabled="true">28</div>
+          <div class="cell cell--prev" aria-disabled="true">29</div>
+          <div class="cell cell--prev" aria-disabled="true">30</div>
+          <div class="cell" data-day="31" role="gridcell" tabindex="0">31</div>
+
+          <!-- Сентябрь -->
+          <div class="cell" data-day="1" role="gridcell" tabindex="0">1</div>
+          <div class="cell" data-day="2" role="gridcell" tabindex="0">2</div>
+          <div class="cell" data-day="3" role="gridcell" tabindex="0">3</div>
+          <div class="cell" data-day="4" role="gridcell" tabindex="0">4</div>
+          <div class="cell" data-day="5" role="gridcell" tabindex="0">5</div>
+          <div class="cell" data-day="6" role="gridcell" tabindex="0">6</div>
+          <div class="cell" data-day="7" role="gridcell" tabindex="0">7</div>
+
+          <div class="cell" data-day="8" role="gridcell" tabindex="0">8</div>
+          <div class="cell" data-day="9" role="gridcell" tabindex="0">9</div>
+          <div class="cell" data-day="10" role="gridcell" tabindex="0">10</div>
+          <div class="cell" data-day="11" role="gridcell" tabindex="0">11</div>
+          <div class="cell" data-day="12" role="gridcell" tabindex="0">12</div>
+          <div class="cell" data-day="13" role="gridcell" tabindex="0">13</div>
+          <div class="cell" data-day="14" role="gridcell" tabindex="0">14</div>
+
+          <div class="cell" data-day="15" role="gridcell" tabindex="0">15</div>
+          <div class="cell" data-day="16" role="gridcell" tabindex="0">16</div>
+          <div class="cell" data-day="17" role="gridcell" tabindex="0">17</div>
+          <div class="cell" data-day="18" role="gridcell" tabindex="0">18</div>
+          <div class="cell" data-day="19" role="gridcell" tabindex="0">19</div>
+          <div class="cell" data-day="20" role="gridcell" tabindex="0">20</div>
+          <div class="cell" data-day="21" role="gridcell" tabindex="0">21</div>
+
+          <div class="cell" data-day="22" role="gridcell" tabindex="0">22</div>
+          <div class="cell" data-day="23" role="gridcell" tabindex="0">23</div>
+          <div class="cell" data-day="24" role="gridcell" tabindex="0">24</div>
+          <div class="cell" data-day="25" role="gridcell" tabindex="0">25</div>
+          <div class="cell" data-day="26" role="gridcell" tabindex="0">26</div>
+          <div class="cell" data-day="27" role="gridcell" tabindex="0">27</div>
+          <div class="cell" data-day="28" role="gridcell" tabindex="0">28</div>
+
+          <div class="cell" data-day="29" role="gridcell" tabindex="0">29</div>
+          <div class="cell" data-day="30" role="gridcell" tabindex="0">30</div>
+          <div class="cell cell--next" aria-disabled="true">1</div>
+          <div class="cell cell--next" aria-disabled="true">2</div>
+          <div class="cell cell--next" aria-disabled="true">3</div>
+          <div class="cell cell--next" aria-disabled="true">4</div>
+          <div class="cell cell--next" aria-disabled="true">5</div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="shift-menu" id="shiftMenu" hidden></div>
+
+  <!-- Модалка выбора/редактирования смен -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal__header">
+        <h3 id="modalTitle">Выбрать смену</h3>
+        <button class="btn" id="modalClose" aria-label="Закрыть">✕</button>
+      </header>
+
+      <div class="modal__body">
+        <!-- Список шаблонов -->
+        <div class="shift-list" id="shiftList">
+          <button class="shift-item" data-id="day" data-title="Дневная смена" data-start="09:00" data-end="18:00" data-rate="10" data-pay="hourly">
+            <span class="dot dot--day"></span>
+            <div><div class="shift-item__title">Дневная смена</div><div class="shift-item__meta">9:00–18:00 • 10 Br/ч</div></div>
+          </button>
+          <button class="shift-item" data-id="eve" data-title="Вечерняя смена" data-start="16:00" data-end="24:00" data-rate="7" data-pay="hourly">
+            <span class="dot dot--eve"></span>
+            <div><div class="shift-item__title">Вечерняя смена</div><div class="shift-item__meta">16:00–24:00 • 7 Br/ч</div></div>
+          </button>
+          <button class="shift-item" data-id="night" data-title="Ночная смена" data-start="00:00" data-end="09:00" data-rate="20" data-pay="hourly">
+            <span class="dot dot--night"></span>
+            <div><div class="shift-item__title">Ночная смена</div><div class="shift-item__meta">0:00–9:00 • 20 Br/ч</div></div>
+          </button>
+          <button class="shift-item" data-id="h9" data-title="9ч смена" data-start="08:00" data-end="18:00" data-rate="10" data-pay="hourly">
+            <span class="dot dot--h9"></span>
+            <div><div class="shift-item__title">9ч смена</div><div class="shift-item__meta">8:00–18:00 • 10 Br/ч</div></div>
+          </button>
+          <button class="shift-item" data-id="full" data-title="Сутки" data-start="00:00" data-end="24:00" data-rate="10" data-pay="hourly">
+            <span class="dot dot--full"></span>
+            <div><div class="shift-item__title">Сутки</div><div class="shift-item__meta">Весь день • 10 Br/ч</div></div>
+          </button>
+          <button class="shift-item" data-id="off" data-title="Выходной" data-start="00:00" data-end="00:00" data-rate="0" data-pay="none">
+            <span class="dot dot--off"></span>
+            <div><div class="shift-item__title">Выходной</div><div class="shift-item__meta">Весь день • Без оплаты</div></div>
+          </button>
+          <button class="shift-item" data-id="sick" data-title="Больничный" data-start="00:00" data-end="24:00" data-rate="10" data-pay="fixed">
+            <span class="dot dot--sick"></span>
+            <div><div class="shift-item__title">Больничный</div><div class="shift-item__meta">Весь день • фикс.</div></div>
+          </button>
+        </div>
+
+        <!-- Редактор -->
+        <div class="editor" id="editor" hidden>
+          <div class="field"><label>Название смены</label><input type="text" id="eTitle" /></div>
+          <div class="fields-2">
+            <div class="field"><label>Начало</label><input type="time" id="eStart" /></div>
+            <div class="field"><label>Конец</label><input type="time" id="eEnd" /></div>
+          </div>
+          <div class="fields-2">
+            <div class="field">
+              <label>Тип оплаты</label>
+              <select id="ePay">
+                <option value="hourly">Почасовая</option>
+                <option value="fixed">Фиксированная</option>
+                <option value="none">Без оплаты</option>
+              </select>
+            </div>
+            <div class="field">
+              <label id="rateLabel">Ставка (Br/ч)</label>
+              <input type="number" id="eRate" min="0" step="0.1" />
+            </div>
+          </div>
+          <div class="fields-2">
+            <div class="field"><label>Часы</label><input type="number" id="eHours" min="0" step="0.1" /></div>
+            <div class="field"><label>Итого (Br)</label><input type="number" id="eTotal" min="0" step="0.1" disabled /></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal__footer">
+        <button class="btn" id="modalBack" hidden>Назад</button>
+        <button class="btn" id="modalDelete" hidden>Удалить</button>
+        <button class="btn btn--primary" id="modalSave" disabled>Сохранить</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <a class="btn" href="home.html">Календарь</a>
+    <a class="btn" href="shifts.html">Смены</a>
+    <a class="btn" href="stats.html">Статистика</a>
+  </div>
+
+
+  <!-- твой основной скрипт -->
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Статистика</title>
+    <link rel="stylesheet" href="../css/main.css" />
+
+    <style>
+      .stats-page {
+        color: inherit;
+      }
+
+      .stats-page .wrap {
+        max-width: 1040px;
+        margin-inline: auto;
+        padding: 16px;
+      }
+
+      .stats-page .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 8px 0 16px;
+      }
+
+      .stats-page .picker {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .stats-page .picker select {
+        padding: 0.5rem 0.7rem;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: transparent;
+        color: inherit;
+      }
+
+      .stats-page .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 0.9rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      .stats-page h1 {
+        font-size: 1.4rem;
+        line-height: 1.2;
+        margin: 0;
+      }
+
+      .stats-page h2 {
+        font-size: 1rem;
+        line-height: 1.2;
+        margin: 0 0 0.35rem;
+      }
+
+      .stats-page .muted {
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
+      .stats-page .card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 14px;
+      }
+
+      .stats-page .summary {
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+
+      .stats-page .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+
+      @media (max-width: 768px) {
+        .stats-page .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (min-width: 900px) {
+        .stats-page .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .stats-page .chart {
+        position: relative;
+        height: 220px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.18);
+        border: 1px dashed rgba(255, 255, 255, 0.08);
+        padding: 10px;
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        overflow: hidden;
+      }
+
+      .stats-page .bar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .stats-page .bar__col {
+        width: 100%;
+        border-radius: 8px;
+        background: linear-gradient(
+          180deg,
+          rgba(120, 146, 255, 0.9),
+          rgba(120, 146, 255, 0.5)
+        );
+      }
+
+      .stats-page .chart--hours .bar__col {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 160, 160, 0.9),
+          rgba(255, 160, 160, 0.5)
+        );
+      }
+
+      .stats-page .chart--shifts .bar__col {
+        background: linear-gradient(
+          180deg,
+          rgba(203, 166, 247, 0.9),
+          rgba(203, 166, 247, 0.5)
+        );
+      }
+
+      .stats-page .bar__label {
+        font-size: 0.8rem;
+        opacity: 0.75;
+      }
+
+      .stats-page .row-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .stats-page .bottombar {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: saturate(120%) blur(6px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 8px;
+        margin-top: 16px;
+      }
+
+      .stats-page .bottombar .btn {
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <body class="stats-page">
+    <header class="header container">
+      <a href="index.html" class="logo">Polar</a>
+      <nav class="nav">
+        <a href="home.html">Календарь</a>
+        <a href="register.html">Регистрация</a>
+      </nav>
+    </header>
+
+    <main class="wrap">
+      <div class="topbar">
+        <h1>Статистика</h1>
+        <div class="picker">
+          <label>Месяц</label>
+          <select id="monthSel" aria-label="Месяц"></select>
+          <label>Год</label>
+          <select id="yearSel" aria-label="Год"></select>
+          <button class="btn" id="clearMonth" type="button">
+            Очистить месяц
+          </button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- Заработок -->
+        <section class="card">
+          <div class="row-head">
+            <div>
+              <h2>🪙 Заработок</h2>
+              <div class="muted">Всего за месяц</div>
+            </div>
+            <div class="summary"><span id="sumMoney">0</span> Br</div>
+          </div>
+          <div
+            class="chart"
+            id="chartMoney"
+            aria-label="Заработок по неделям"
+          ></div>
+        </section>
+
+        <section class="card">
+          <div class="row-head">
+            <div>
+              <h2>⏰ Рабочие часы</h2>
+              <div class="muted">Всего за месяц</div>
+            </div>
+            <div class="summary"><span id="sumHours">0</span> ч</div>
+          </div>
+          <div
+            class="chart chart--hours"
+            id="chartHours"
+            aria-label="Часы по неделям"
+          ></div>
+        </section>
+
+        <section class="card" style="grid-column: 1/-1">
+          <div class="row-head">
+            <div>
+              <h2>🧱 Смены</h2>
+              <div class="muted">Распределение по типам</div>
+            </div>
+            <div class="summary" id="topShift">—</div>
+          </div>
+          <div
+            class="chart chart--shifts"
+            id="chartShifts"
+            aria-label="Количество смен по типам"
+          ></div>
+        </section>
+      </div>
+
+      <div class="bottombar">
+        <button class="btn" onclick="location.href='home.html'">
+          Календарь
+        </button>
+        <button class="btn" onclick="location.href='shifts.html'">Смены</button>
+        <button class="btn">Статистика</button>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        const $ = (s, r = document) => r.querySelector(s);
+        const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+        const monthSel = $("#monthSel");
+        const yearSel = $("#yearSel");
+
+        const now = new Date();
+        const years = [
+          now.getFullYear() - 1,
+          now.getFullYear(),
+          now.getFullYear() + 1,
+        ];
+        years.forEach((y) => {
+          const o = document.createElement("option");
+          o.value = y;
+          o.textContent = y;
+          yearSel.appendChild(o);
+        });
+        const monthNames = Array.from({ length: 12 }, (_, i) =>
+          new Date(2025, i, 1).toLocaleString("ru-RU", { month: "long" })
+        );
+        monthNames.forEach((label, i) => {
+          const m = String(i + 1).padStart(2, "0");
+          const o = document.createElement("option");
+          o.value = m;
+          o.textContent = label;
+          monthSel.appendChild(o);
+        });
+
+        let defY = now.getFullYear();
+        let defM = String(now.getMonth() + 1).padStart(2, "0");
+        for (let i = 0; i < 12; i++) {
+          const m = String(now.getMonth() + 1 - i).padStart(2, "0");
+          const y = now.getFullYear();
+          if (localStorage.getItem("polar_shifts_" + y + "_" + m)) {
+            defY = y;
+            defM = m;
+            break;
+          }
+        }
+        yearSel.value = defY;
+        monthSel.value = defM;
+
+        function parseRec(rec) {
+          const pay = rec.pay || "hourly";
+          const hours = Number(rec.hours || 0);
+          const rate = Number(rec.rate || 0);
+          const total =
+            pay === "hourly" ? hours * rate : pay === "fixed" ? rate : 0;
+          return { hours, total, kind: rec.kind || "custom" };
+        }
+        function loadMonth(y, m) {
+          const raw = JSON.parse(
+            localStorage.getItem("polar_shifts_" + y + "_" + m) || "{}"
+          );
+          const entries = Object.values(raw).map(parseRec);
+          const sumMoney = entries.reduce((s, r) => s + r.total, 0);
+          const sumHours = entries.reduce((s, r) => s + r.hours, 0);
+
+          const days = new Date(Number(y), Number(m), 0).getDate();
+          const weeks = Math.ceil(days / 7);
+          const perWeekMoney = new Array(weeks).fill(0);
+          const perWeekHours = new Array(weeks).fill(0);
+          Object.keys(raw).forEach((k) => {
+            const day = Number(k.split("-")[2] || "1");
+            const w = Math.floor((day - 1) / 7);
+            const r = parseRec(raw[k]);
+            perWeekMoney[w] += r.total;
+            perWeekHours[w] += r.hours;
+          });
+          const byKind = {};
+          entries.forEach((r) => {
+            byKind[r.kind] = (byKind[r.kind] || 0) + 1;
+          });
+          return { sumMoney, sumHours, perWeekMoney, perWeekHours, byKind };
+        }
+        function renderBars(el, values, labels) {
+          el.innerHTML = "";
+          const max = Math.max(1, ...values);
+          values.forEach((v, i) => {
+            const bar = document.createElement("div");
+            bar.className = "bar";
+            const col = document.createElement("div");
+            col.className = "bar__col";
+            col.style.height = (v / max) * 90 + 5 + "%";
+            col.title = String(Math.round(v * 100) / 100);
+            const lab = document.createElement("div");
+            lab.className = "bar__label";
+            lab.textContent = labels ? labels[i] : i + 1;
+            bar.appendChild(col);
+            bar.appendChild(lab);
+            el.appendChild(bar);
+          });
+        }
+        function update() {
+          const y = yearSel.value,
+            m = monthSel.value;
+          const { sumMoney, sumHours, perWeekMoney, perWeekHours, byKind } =
+            loadMonth(y, m);
+          $("#sumMoney").textContent = (Math.round(sumMoney * 100) / 100)
+            .toFixed(1)
+            .replace(".0", "");
+          $("#sumHours").textContent = (Math.round(sumHours * 10) / 10)
+            .toFixed(1)
+            .replace(".0", "");
+          renderBars($("#chartMoney"), perWeekMoney);
+          renderBars($("#chartHours"), perWeekHours);
+          const kinds = Object.keys(byKind);
+          const counts = kinds.map((k) => byKind[k]);
+          const labels = kinds.map(
+            (k) =>
+              ({
+                day: "день",
+                eve: "вечер",
+                night: "ночь",
+                h9: "9ч",
+                full: "сутки",
+                off: "off",
+                sick: "больн.",
+              }[k] || k)
+          );
+          renderBars($("#chartShifts"), counts, labels);
+          $("#topShift").textContent = kinds.length
+            ? `${labels[counts.indexOf(Math.max(...counts))]} — ${Math.max(
+                ...counts
+              )}`
+            : "нет данных";
+        }
+        monthSel.addEventListener("change", update);
+        yearSel.addEventListener("change", update);
+        $("#clearMonth").addEventListener("click", () => {
+          if (!confirm("Очистить все данные за выбранный месяц?")) return;
+          const key = "polar_shifts_" + yearSel.value + "_" + monthSel.value;
+          localStorage.removeItem(key);
+          update();
+        });
+        update();
+      })();
+    </script>
+  </body>
+</html>
