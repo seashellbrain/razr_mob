@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Смены — Polar</title>
+
+    <!-- Основные стили проекта -->
+    <link rel="stylesheet" href="../css/main.css" />
+
+    <!-- Swiper -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <style>
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .title {
+        font-weight: 800;
+        font-size: clamp(22px, 3vw, 28px);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 0.6rem 0.9rem;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+      }
+      .btn--primary {
+        background: #2a2f35;
+        border-color: #2a2f35;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1rem;
+      }
+
+      /* ===== Swiper ===== */
+      .swiper {
+        width: 100%;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .slide__card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 24px;
+        text-align: center;
+        color: white;
+      }
+      .slide__icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .slide__title {
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .swiper-pagination-bullet {
+        background: rgba(255, 255, 255, 0.4);
+      }
+      .swiper-pagination-bullet-active {
+        background: #fff;
+      }
+
+      /* ====== список ====== */
+      .create {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px dashed rgba(255, 255, 255, 0.28);
+        cursor: pointer;
+        margin-top: 16px;
+      }
+      .create:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .create .plus {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: 18px;
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+      .item:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .info {
+        flex: 1;
+        display: grid;
+        gap: 4px;
+      }
+      .name {
+        font-weight: 700;
+      }
+      .meta {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+        .bottombar {
+      position: sticky;
+      bottom: 0;
+      z-index: 30;
+      background: #121417;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .5rem;
+      padding: .5rem
+    }
+
+    .bottombar .btn {
+      justify-content: center;
+      width: 100%
+    }
+
+    @media (max-width:640px) {
+      .modal {
+        width: 95vw;
+        padding: .8rem;
+        border-radius: 14px
+      }
+    }
+    </style>
+  </head>
+
+  <body class="home">
+    <div class="page-bg"></div>
+
+    <header class="header container">
+      <a href="index.html" class="logo">Polar</a>
+      <nav class="nav">
+        <a href="login.html">Вход</a>
+        <a href="register.html">Регистрация</a>
+        <a href="stats.html">Статистика</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="glass">
+        <div class="toolbar">
+          <h1 class="title">Шаблоны смен</h1>
+          <button class="btn" id="resetDefaults">Сбросить</button>
+        </div>
+
+        <!-- ===== Swiper Slider ===== -->
+        <section class="card">
+          <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="slide__card">
+                  <div class="slide__icon">🌞</div>
+                  <h3 class="slide__title">Дневные смены</h3>
+                  <p>9:00–18:00 • 10 Br/ч</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="slide__card">
+                  <div class="slide__icon">🌆</div>
+                  <h3 class="slide__title">Вечерние смены</h3>
+                  <p>16:00–24:00 • 7 Br/ч</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="slide__card">
+                  <div class="slide__icon">🌙</div>
+                  <h3 class="slide__title">Ночные смены</h3>
+                  <p>00:00–09:00 • 20 Br/ч</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="slide__card">
+                  <div class="slide__icon">⏱️</div>
+                  <h3 class="slide__title">Сутки / 9ч</h3>
+                  <p>Гибкие пресеты: сутки, 8–18 и др.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
+        </section>
+        <!-- ===== /Swiper ===== -->
+
+        <div class="create" id="createNew">
+          <div class="plus">+</div>
+          <div>
+            <div class="name">Создать новую</div>
+            <div class="meta">Соберите свой шаблон смены</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 12px">
+          <div class="list" id="list"></div>
+        </div>
+      </section>
+  <div class="bottombar">
+    <a class="btn" href="home.html">Календарь</a>
+    <a class="btn" href="shifts.html">Смены</a>
+    <a class="btn" href="stats.html">Статистика</a>
+  </div>
+    </main>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+      new Swiper(".mySwiper", {
+        loop: true,
+        spaceBetween: 20,
+        slidesPerView: 1,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+      });
+
+      // список шаблонов
+      const LS_KEY = "polar_shift_templates_v1";
+      const list = document.getElementById("list");
+      const resetBtn = document.getElementById("resetDefaults");
+
+      const defaults = [
+        { title: "Дневная смена", start: "09:00", end: "18:00", rate: 10 },
+        { title: "Вечерняя смена", start: "16:00", end: "24:00", rate: 7 },
+        { title: "Ночная смена", start: "00:00", end: "09:00", rate: 20 },
+        { title: "Сутки", start: "00:00", end: "24:00", rate: 10 },
+      ];
+
+      function load() {
+        try {
+          return JSON.parse(localStorage.getItem(LS_KEY)) || defaults;
+        } catch {
+          return defaults;
+        }
+      }
+      function save(data) {
+        localStorage.setItem(LS_KEY, JSON.stringify(data));
+      }
+
+      function render() {
+        const data = load();
+        list.innerHTML = "";
+        data.forEach((d) => {
+          const el = document.createElement("div");
+          el.className = "item";
+          el.innerHTML = `
+            <div class="icon">💼</div>
+            <div class="info">
+              <div class="name">${d.title}</div>
+              <div class="meta">${d.start}–${d.end} • ${d.rate} Br/ч</div>
+            </div>
+          `;
+          list.appendChild(el);
+        });
+      }
+
+      resetBtn.addEventListener("click", () => {
+        if (confirm("Сбросить шаблоны к стандартным?")) {
+          save(defaults);
+          render();
+        }
+      });
+
+      render();
+    </script>
+  </body>
+</html>
