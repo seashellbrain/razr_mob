@@ -18,19 +18,19 @@
 
     <main class="auth__content" role="main">
       <h1 class="auth__title">Войти</h1>
-      <form class="form auth__form" action="#" method="post">
+
+      <form class="form auth__form" onsubmit="event.preventDefault(); window.location.href='./home.html';">
         <label class="form__field">
           <span class="form__label">E-mail</span>
-          <input class="form__input" type="email" name="email" placeholder="E-mail" required>
+          <input class="form__input" type="email" placeholder="E-mail">
         </label>
         <label class="form__field">
           <span class="form__label">Пароль</span>
-          <input class="form__input" type="password" name="password" placeholder="Пароль" required minlength="6">
+          <input class="form__input" type="password" placeholder="Пароль">
         </label>
-        <button class="button form__submit" type="submit"> <a class="auth__link" href="./home.html">Войти</a></button>
+        <button class="button form__submit" type="submit">Войти</button>
       </form>
 
-      <p class="auth__hint">Нет аккаунта? <a class="auth__link" href="./register.html">Создайте его</a></p>
     </main>
   </div>
 </body>
